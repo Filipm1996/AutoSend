@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backgroud"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/titles"
+        android:text="Year"
+        android:textSize="30sp"
+        android:id="@+id/year"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backButton"
+        android:src="@drawable/ic_baseline_arrow_back_ios_24"
+        android:background="#00F3F3F3"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@id/year"
+        app:layout_constraintTop_toTopOf="@id/year"
+        app:layout_constraintBottom_toBottomOf="@id/year"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/forwardButton"
+        app:layout_constraintStart_toEndOf="@id/year"
+        app:layout_constraintTop_toTopOf="@id/year"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/year"
+        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+        android:background="#00F3F3F3"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingBottom="35dp"
+        android:clipToPadding="false"
+        android:id="@+id/recyclerViewForMonthlyIncome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/year"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

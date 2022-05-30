@@ -2,25 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/ConstraintLayoutMain"
     android:layout_height="match_parent"
+    android:background="@drawable/backgroud"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.activities.activities.MainActivity">
 
+
     <Button
+        android:background="@color/white"
         android:id="@+id/cotactBookButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="80dp"
         android:text="Książka kontaktów"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:textColor="@color/titles"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
         />
 
     <Button
+        android:textColor="@color/titles"
+        android:background="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
         android:id="@+id/beauty_treatmentsButton"
         android:text="Zabiegi"
         app:layout_constraintTop_toBottomOf="@id/cotactBookButton"
@@ -28,9 +35,11 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
+        android:textColor="@color/titles"
+        android:background="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
         android:text="Kalendarz"
         android:id="@+id/calendarButton"
         app:layout_constraintTop_toBottomOf="@id/beauty_treatmentsButton"
@@ -38,12 +47,26 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
+        android:textColor="@color/titles"
+        android:background="@color/white"
         android:id="@+id/settingsSMSButton"
         android:layout_marginTop="20dp"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
         android:text="Ustawienia SMS"
         app:layout_constraintTop_toBottomOf="@id/calendarButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:textColor="@color/titles"
+        android:background="@color/white"
+        android:id="@+id/monthlyIncomeButton"
+        android:layout_marginTop="20dp"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:text="Miesięczne podsumowanie"
+        app:layout_constraintTop_toBottomOf="@id/settingsSMSButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F3F3F3"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/changeDateFromButton"
+        app:layout_constraintEnd_toEndOf="@id/changeDateToButton"
+        android:id="@+id/beautyTreatmentInfo"
+        android:textColor="@color/titles"
+        android:text="zabieg kosmetyczny"
+        android:textColorHint="@color/grey1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_margin="10dp"
+        android:textColor="@color/titles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wybierz date od"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/beautyTreatmentInfo"
+        android:id="@+id/dateFrom"/>
+
+    <Button
+        android:id="@+id/changeDateFromButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zmień date od"
+        android:textColor="@color/titles"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/dateFrom"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/dateTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="10dp"
+        android:text="Wybierz date do"
+        android:textColor="@color/titles"
+        app:layout_constraintStart_toEndOf="@id/dateFrom"
+        app:layout_constraintTop_toBottomOf="@id/beautyTreatmentInfo" />
+
+    <Button
+        android:layout_marginStart="20dp"
+        android:id="@+id/changeDateToButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zmień date do"
+        android:textColor="@color/titles"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/dateFrom"
+        app:layout_constraintStart_toEndOf="@id/changeDateFromButton"/>
+    <EditText
+        android:layout_marginStart="22dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newPrice"
+        android:hint="Podaj nową cenę"
+        android:textColorHint="@color/grey1"
+        android:textColor="@color/titles"
+        app:layout_constraintStart_toStartOf="@id/changeDateFromButton"
+        app:layout_constraintEnd_toEndOf="@id/changeDateToButton"
+        app:layout_constraintTop_toBottomOf="@id/changeDateFromButton"/>
+    <Button
+        android:id="@+id/changePriceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zmień"
+        android:backgroundTint="@color/white"
+        android:textColor="@color/titles"
+        app:layout_constraintTop_toBottomOf="@id/newPrice"
+        app:layout_constraintStart_toStartOf="@id/newPrice"
+        app:layout_constraintEnd_toEndOf="@id/newPrice"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

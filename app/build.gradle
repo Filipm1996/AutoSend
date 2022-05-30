@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.autosend"
-        minSdk 21
+        minSdk 26
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -55,4 +55,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation "androidx.room:room-ktx:2.4.2"
     kapt "androidx.room:room-compiler:$room_version"
+
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
 }

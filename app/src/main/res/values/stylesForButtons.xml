@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Button.Pink" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">#E6B0EF</item>
+    </style>
+</resources>

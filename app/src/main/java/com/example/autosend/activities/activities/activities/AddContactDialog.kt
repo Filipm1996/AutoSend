@@ -1,37 +1,52 @@
 package com.example.autosend.activities.activities.activities
 
-import android.content.Context
+
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDialog
 import androidx.core.text.isDigitsOnly
-import com.example.autosend.activities.activities.db.ContactInfo
-import com.example.autosend.activities.activities.repositories.Repository
+import androidx.fragment.app.DialogFragment
+import com.example.autosend.activities.activities.db.entities.ContactInfo
 import com.example.autosend.databinding.AddContactDialogBinding
 
-class AddContactDialog(context: Context, var onAddButtonClicked: onAddButtonClicked) : AppCompatDialog(context) {
+
+class AddContactDialog : DialogFragment(){
     private lateinit var binding: AddContactDialogBinding
-    private lateinit var repository: Repository
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var onAddButtonClicked : ((ContactInfo)-> Unit)? = null
+    private var onCancelButtonClicked :  (()->Unit)? = null
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = AddContactDialogBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        repository = Repository(context)
-        setOnClickListeners()
+        setUpClickListeners()
+        return binding.root
     }
 
-    private fun setOnClickListeners() {
+    fun setUpAddButtonClicked (callback : (ContactInfo)->Unit){
+        this.onAddButtonClicked = callback
+    }
+
+    fun setUpCancelButtonClicked (callback : ()-> Unit){
+        this.onCancelButtonClicked = callback
+    }
+    private fun setUpClickListeners() {
         binding.addButton.setOnClickListener {
-            val name = binding.editTextNameAndSurrname.text.toString()
+            val nameText = binding.editTextNameAndSurrname.text.toString()
             val number = binding.editTextPhone.text.toString()
-            if( name.isNotEmpty() && number.isNotEmpty() && number.isDigitsOnly()){
-                val contactInfo = ContactInfo(name, number)
-                onAddButtonClicked.addToDb(contactInfo)
-                Toast.makeText(context, "Dodano ${contactInfo.nameAndSurrname} do bazy kontaktów", Toast.LENGTH_LONG).show()
-            }else { Toast.makeText(context, "Wprowadź prawidłowe dane", Toast.LENGTH_LONG).show()}
+            if(nameText.isNotEmpty() && number.isNotEmpty() && number.isDigitsOnly()){
+                val contactInfo = ContactInfo(nameText,number)
+                onAddButtonClicked!!.invoke(contactInfo)
+                Toast.makeText(requireContext(),"Dodano ${contactInfo.nameAndSurrname} do kontaktów!", Toast.LENGTH_LONG).show()
+            }else {
+                Toast.makeText(requireContext(),"Wpisz poprawne dane",Toast.LENGTH_LONG).show()
+            }
         }
         binding.cancelButton.setOnClickListener {
-            dismiss()
+            onCancelButtonClicked!!.invoke()
         }
     }
 }

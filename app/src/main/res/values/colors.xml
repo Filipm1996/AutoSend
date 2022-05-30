@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
+    <color name="fullTransparent">#00FDFDCF</color>
+    <color name="available">#FFFFFF</color>
+    <color name="busy">#CD4945</color>
+    <color name="icon">#B85855</color>
+    <color name="hints">#E3B9B8</color>
+    <color name="titles">#000000</color>
+    <color name="gold">#FFD700</color>
     <color name="grey1">#95939A</color>
     <color name="grey2">#848387</color>
     <color name="teal_200">#FF03DAC5</color>
