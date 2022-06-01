@@ -2,6 +2,9 @@ package com.example.autosend.activities.activities.activities
 
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -31,11 +34,11 @@ class ContactBook : AppCompatActivity() {
     }
 
     private fun setUpRecyclerView() {
-        autoSendViewModel.getAllContactInfoFromDb().observe(this, Observer {
+        autoSendViewModel.getAllContactInfoFromDb().observe(this) {
             contactBookAdapter.updateListOfContacts(it)
             binding.recyclerViewContactBook.layoutManager = LinearLayoutManager(this)
             binding.recyclerViewContactBook.adapter = contactBookAdapter
-        })
+        }
 
     }
 
@@ -53,7 +56,19 @@ class ContactBook : AppCompatActivity() {
             }
         }
         contactBookAdapter.setOnDeleteClickListener {
-            autoSendViewModel.deleteContactFromDb(it)
+            val buildier = AlertDialog.Builder(ContextThemeWrapper(this,R.style.AlertDialogCustom))
+            buildier.setMessage("Czy chcesz usunać ${it.nameAndSurrname} ?")
+            buildier.setCancelable(true)
+            buildier.setPositiveButton("tak"){dialog, _ ->
+                autoSendViewModel.deleteContactFromDb(it)
+                dialog.dismiss()
+                Toast.makeText(this,"Usunięto ${it.nameAndSurrname}", Toast.LENGTH_LONG).show()
+            }
+            buildier.setNegativeButton("Nie"){dialog, _->
+                dialog.dismiss()
+            }
+            val alert = buildier.create()
+            alert.show()
         }
     }
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/busy"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
 
     <TextView
         android:textColor="@color/black"
@@ -18,10 +18,10 @@
         app:layout_constraintTop_toTopOf="parent"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@color/available">
     </LinearLayout>
 

@@ -41,6 +41,7 @@ class AddContactDialog : DialogFragment(){
                 val contactInfo = ContactInfo(nameText,number)
                 onAddButtonClicked!!.invoke(contactInfo)
                 Toast.makeText(requireContext(),"Dodano ${contactInfo.nameAndSurrname} do kontaktów!", Toast.LENGTH_LONG).show()
+                dismiss()
             }else {
                 Toast.makeText(requireContext(),"Wpisz poprawne dane",Toast.LENGTH_LONG).show()
             }

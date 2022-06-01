@@ -15,7 +15,7 @@ class EditMessageTextDialog : DialogFragment(){
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = EditMessageTextDialogBinding.inflate(layoutInflater)
         setUpClickListeners()
         return binding.root

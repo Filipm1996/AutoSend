@@ -13,8 +13,9 @@ import java.time.format.DateTimeFormatter
 
 class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private var freeDay : Boolean = false
-    private var setOnClickPosition : ((UserTimeTreatment?)->Unit)? = null
+    private var setOnClickPosition : ((List<UserTimeTreatment>?)->Unit)? = null
     private var listOfContent = mutableListOf<UserTimeTreatment>()
+
     companion object {
         const val viewHolder1_4 = 1
         const val viewHolder1_4v2 = 2
@@ -27,11 +28,14 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         const val viewHolder3_4v2 = 9
         const val viewHolder_free_day = 10
     }
+
     private var beautyTreatmentForPreviousHour = ""
     private var beautyTreatmentNameForHour = ""
     private var itemForHour : UserTimeTreatment? = null
     private var previousHour = 0
     private var itemForPreviousHour : UserTimeTreatment? = null
+    private var previousStartMinute : Int? = 0
+    private var previousStartHour : Int? = 0
     private var previousEndHour : Int? = 0
     private var previousEndMinute : Int?= 0
     private var minuteOfEnd = 0
@@ -39,6 +43,8 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     private var hourNow = 0
     private var hourOfStart = 0
     private var minuteOfStart = 0
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when(viewType){
@@ -99,26 +105,25 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             is ViewHolderEmpty-> {
             }
             is ViewHolderFull ->{
-                if(itemForHour!!.beautyTreatmentTime.toInt() + minuteOfStart > 60 && previousEndHour != hourNow && minuteOfEnd < 15){
-                    holder.startTime.text = "$hourOfStart : $minuteOfStartString"
+                if(itemForHour!=null){
+                if(itemForHour!!.beautyTreatmentTime.toInt() + minuteOfStart > 60 && previousEndHour != hourNow ){
+                    holder.startTime.text = "S: $hourOfStart : $minuteOfStartString"
                     holder.beautyTreatment.text = beautyTreatmentNameForHour
                 }else if(previousEndHour == hourNow && minuteOfStart + itemForHour!!.beautyTreatmentTime.toInt() <60){
-                    holder.startTime.text = "$previousEndHour : $minuteOfPreviousEndString"
-                    holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.endTime.text = "$hourOfEnd : $minuteOfEndString"
-                }else if( previousEndHour == hourNow && minuteOfStart >30 && minuteOfEnd <15){
-                    holder.startTime.text = "$previousEndHour : $minuteOfPreviousEndString"
-                    holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.endTime.text = "$hourOfStart : $minuteOfStartString"
-                }else if(previousEndHour == hourNow && minuteOfStart >30 && minuteOfEnd >15){
-                    holder.startTime.text = "$previousEndHour : $minuteOfPreviousEndString"
-                    holder.endTime.text = "$hourOfStart : $minuteOfStartString"
-                }else if(previousEndHour!= hourNow && itemForHour!!.beautyTreatmentTime.toInt() >60 && minuteOfEnd >15){
-                    holder.startTime.text = "$hourOfStart : $minuteOfStartString"
+                    holder.startTime.text = "K: $previousEndHour : $minuteOfPreviousEndString"
+                    holder.beautyTreatment.text = "S: $hourOfStart : $minuteOfStartString"
+                    holder.endTime.text = "K: $hourOfEnd : $minuteOfEndString"
+                }else if( previousEndHour == hourNow && minuteOfStart + itemForHour!!.beautyTreatmentTime.toInt()  > 60){
+                    holder.startTime.text = "K: $previousEndHour : $minuteOfPreviousEndString"
+                    holder.beautyTreatment.text = "S: $hourOfStart : $minuteOfStartString"
+                    holder.endTime.text = beautyTreatmentNameForHour
                 }else{
-                    holder.startTime.text = "$hourOfStart : $minuteOfStartString"
+                    holder.startTime.text = "S: $hourOfStart : $minuteOfStartString"
                     holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.endTime.text = "$hourOfEnd : $minuteOfEndString"
+                    holder.endTime.text = "K: $hourOfEnd : $minuteOfEndString"
+                }}else{
+                    holder.beautyTreatment.text = beautyTreatmentForPreviousHour
+                    holder.endTime.text = "$previousEndHour : $minuteOfPreviousEndString"
                 }
             }
             is ViewHolder_1_4 ->{
@@ -126,25 +131,25 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
             }
             is ViewHolder_3_4 -> {
-                if ( hourNow == previousEndHour){
-                    holder.endTime.text = "$previousEndHour : $minuteOfPreviousEndString"
-                    holder.beautyTreatment.text = itemForPreviousHour!!.beautyTreatmentName
+                if ( hourNow == previousEndHour && previousStartMinute!! > 45){
+                    holder.endTime.text = "K: $previousEndHour : $minuteOfPreviousEndString"
+                    holder.beautyTreatment.text = beautyTreatmentForPreviousHour
+                }else if(hourNow == previousEndHour && previousStartMinute!! <45){
+                    holder.endTime.text = "K: $previousEndHour : $minuteOfPreviousEndString"
                 }else{
-                    holder.startTime.text = "$hourOfStart : $minuteOfStartString"
+                    holder.startTime.text = "S: $hourOfStart : $minuteOfStartString"
                     holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.endTime.text = "$hourOfEnd : $minuteOfEndString"
+                    holder.endTime.text = "K: $hourOfEnd : $minuteOfEndString"
                 }
             }
             is ViewHolder_3_4v2 -> {
-                if (hourNow== hourOfStart && hourNow == previousEndHour){
-                    holder.endTime.text = "$previousEndHour : $minuteOfPreviousEndString"
+                if( hourNow == hourOfStart && minuteOfStart + itemForHour!!.beautyTreatmentTime.toInt()  > 60){
+                    holder.timeStart.text = "S: $hourOfStart : $minuteOfStartString"
                     holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.timeStart.text = "$hourOfStart : $minuteOfStartString"
-                }else if( hourNow == hourOfStart && minuteOfEnd >14){
-                    holder.timeStart.text = "$hourOfStart : $minuteOfStartString"
                 }else {
                     holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.timeStart.text = "$hourOfStart : $minuteOfStartString"
+                    holder.timeStart.text = "S: $hourOfStart : $minuteOfStartString"
+                    holder.endTime.text = "K: $hourOfEnd : $minuteOfEndString"
                 }
             }
             is ViewHolder_1_2_1 ->{
@@ -154,17 +159,19 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             is ViewHolder_1_2 -> {
                 if(itemForHour!=null){
                     holder.beautyTreatment.text = beautyTreatmentNameForHour
-                    holder.endTime.text = "$hourOfEnd : $minuteOfEndString"
-                }else if (previousEndHour == hourNow){
+                    holder.endTime.text = "K: $hourOfEnd : $minuteOfEndString"
+                }else if (previousEndHour == hourNow && previousStartMinute!! < 45){
+                    holder.endTime.text = "K: $hourOfEnd : $minuteOfEndString"
+                }else{
                     holder.beautyTreatment.text = beautyTreatmentForPreviousHour
-                    holder.endTime.text = "$hourOfEnd : $minuteOfEndString"
+                    holder.endTime.text = "K: $previousEndHour : $previousEndMinute"
                 }
 
 
             }
             is ViewHolder_1_2v2-> {
                 holder.beautyTreatment.text = beautyTreatmentNameForHour
-                holder.startTime.text = "$hourOfStart : $minuteOfStartString"
+                holder.startTime.text = "S: $hourOfStart : $minuteOfStartString"
 
             }
             is ViewHolder_1_4v2 -> {
@@ -174,15 +181,9 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
         holder.itemView.setOnClickListener{
             hourNow = position + 7
-            val listOfHour : List<UserTimeTreatment> = listOfContent.filter {  LocalTime.parse(it.time, DateTimeFormatter.ofPattern("HH:mm")).hour ==  hourNow}
-            val itemForHour : UserTimeTreatment? =
-                if(listOfHour.isEmpty()){
-                    null
-                }else{
-                    listOfHour[0]
-                }
-            val  userTimeTreatment = listOfContent.find { it == itemForHour }
-            setOnClickPosition?.invoke(userTimeTreatment)
+            val listOfHour : List<UserTimeTreatment> = listOfContent.filter {  LocalTime.parse(it.time, DateTimeFormatter.ofPattern("HH:mm")).hour ==  hourNow ||
+                    LocalTime.parse(it.time, DateTimeFormatter.ofPattern("HH:mm")).plusMinutes(it.beautyTreatmentTime.toLong()).hour ==  hourNow }
+            setOnClickPosition?.invoke(listOfHour)
         }
         }
 
@@ -209,6 +210,12 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             }
             previousEndMinute = itemForPreviousHour.let {
                 LocalTime.parse(it!!.time, DateTimeFormatter.ofPattern("HH:mm")).plusMinutes(itemForPreviousHour!!.beautyTreatmentTime.toLong()).minute
+            }
+            previousStartHour = itemForPreviousHour.let {
+                LocalTime.parse(it!!.time, DateTimeFormatter.ofPattern("HH:mm")).hour
+            }
+            previousStartMinute = itemForPreviousHour.let {
+                LocalTime.parse(it!!.time, DateTimeFormatter.ofPattern("HH:mm")).minute
             }
         }else{
             previousEndHour = null
@@ -337,7 +344,7 @@ class AdapterForCalendar : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         this.listOfContent = list.toMutableList()
     }
 
-    fun clickPosition(callback : (UserTimeTreatment?)-> Unit){
+    fun clickPosition(callback : (List<UserTimeTreatment>?)-> Unit){
         this.setOnClickPosition = callback
     }
 

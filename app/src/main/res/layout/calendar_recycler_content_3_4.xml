@@ -3,14 +3,13 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/busy"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
     <TextView
         android:textColor="@color/black"
-        android:layout_margin="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timeStart"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,8 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/beautyTreatment"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        android:layout_margin="2dp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeStart"
@@ -32,9 +30,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timeEnd"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:text=""
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -43,7 +41,7 @@
         android:layout_height="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="45dp"
         android:background="@color/available">
     </LinearLayout>
     <View

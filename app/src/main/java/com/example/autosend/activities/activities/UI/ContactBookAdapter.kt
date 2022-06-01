@@ -1,5 +1,6 @@
 package com.example.autosend.activities.activities.UI
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class ContactBookAdapter : RecyclerView.Adapter<ContactBookAdapter.ViewHolder>()
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contactInfo = listOfContacts!![position]
         holder.nameText.text = contactInfo.nameAndSurrname

@@ -40,8 +40,9 @@
         android:background="#B4F3F3F3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="7dp"
-        android:layout_marginEnd="7dp"/>
+        android:layout_marginEnd="15dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

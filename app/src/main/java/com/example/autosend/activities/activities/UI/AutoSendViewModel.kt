@@ -1,13 +1,12 @@
 package com.example.autosend.activities.activities.UI
 
-import android.widget.Toast
+
 import androidx.lifecycle.ViewModel
 import com.example.autosend.activities.activities.db.entities.*
 import com.example.autosend.activities.activities.repositories.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.Month

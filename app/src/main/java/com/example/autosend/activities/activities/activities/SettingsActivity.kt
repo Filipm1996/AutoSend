@@ -7,11 +7,12 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
+import android.telephony.SmsManager.getSmsManagerForSubscriptionId
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.autosend.R
@@ -25,6 +26,7 @@ import com.example.autosend.databinding.ActivitySettingsBinding
 
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var smsManager: SmsManager
     lateinit var binding: ActivitySettingsBinding
     private lateinit var viewModel : AutoSendViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +34,9 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpViewModel()
-        viewModel.getMessageFromDb().observe(this, Observer {
+        viewModel.getMessageFromDb().observe(this) {
             setUpMessage(it)
-        })
+        }
         setUpRecyclerView()
     }
 
@@ -47,12 +49,12 @@ class SettingsActivity : AppCompatActivity() {
         val adapter = AdapterForSettings()
         binding.recyclerViewForSending.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewForSending.adapter = adapter
-        viewModel.getAllUserTimeTreatments().observe(this, Observer {
+        viewModel.getAllUserTimeTreatments().observe(this) {
             val list = viewModel.getUserTimeTreatmentsForToday(it)
             adapter.updateList(list)
             adapter.notifyDataSetChanged()
             setUpClickListeners(list)
-        })
+        }
     }
 
     private fun setUpViewModel() {
@@ -85,11 +87,19 @@ class SettingsActivity : AppCompatActivity() {
     }
 
 
+
+
+
+
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendSms(phoneNumber: String, message: String, time : String, requestCode : Int) {
         val fullPhoneNumber = "+48${phoneNumber}"
         val messageToSend = "$message \n\n Godzina zabiegu :  $time"
-        val smsManager = this.getSystemService(SmsManager::class.java)
+        smsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            this.getSystemService(SmsManager::class.java).createForSubscriptionId(requestCode)
+        } else {
+            getSmsManagerForSubscriptionId(requestCode)
+        }
         val sentPI: PendingIntent = PendingIntent.getBroadcast(this, requestCode, Intent("SMS_SENT"), PendingIntent.FLAG_UPDATE_CURRENT)
         smsManager.sendTextMessage(fullPhoneNumber, null, messageToSend, sentPI, null)
     }
@@ -104,7 +114,7 @@ class SettingsActivity : AppCompatActivity() {
         channel.description = "sms_channel"
         mNotificationManager.createNotificationChannel(channel)
 
-        var builder = NotificationCompat.Builder(this, "sms_channel")
+        val builder = NotificationCompat.Builder(this, "sms_channel")
             .setContentTitle("Wysłano sms")
             .setSmallIcon(R.drawable.ic_baseline_face_retouching_natural_24)
             .setContentText("Wysłano sms do $phoneNumber - $name")

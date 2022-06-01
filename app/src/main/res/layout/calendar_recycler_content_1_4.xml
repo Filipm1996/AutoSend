@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/busy"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
     <TextView
         android:textColor="@color/black"
         android:layout_marginStart="5dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timeEnd"
-        android:textSize="17sp"
+        android:textSize="15sp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@color/available">
     </LinearLayout>
     <View
