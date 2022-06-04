@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.telephony.SmsManager.getSmsManagerForSubscriptionId
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
@@ -91,6 +92,7 @@ class SettingsActivity : AppCompatActivity() {
 
 
 
+
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendSms(phoneNumber: String, message: String, time : String, requestCode : Int) {
         val fullPhoneNumber = "+48${phoneNumber}"
@@ -100,7 +102,7 @@ class SettingsActivity : AppCompatActivity() {
         } else {
             getSmsManagerForSubscriptionId(requestCode)
         }
-        val sentPI: PendingIntent = PendingIntent.getBroadcast(this, requestCode, Intent("SMS_SENT"), PendingIntent.FLAG_UPDATE_CURRENT)
+        val sentPI: PendingIntent = PendingIntent.getBroadcast(this, requestCode, Intent("SMS_SENT"), PendingIntent.FLAG_IMMUTABLE)
         smsManager.sendTextMessage(fullPhoneNumber, null, messageToSend, sentPI, null)
     }
 
