@@ -133,14 +133,15 @@ class AutoSendViewModelTest {
             "110","30","70"))
         val fakeRepository = FakeRepository()
         viewModel = spyk(AutoSendViewModel(fakeRepository), recordPrivateCalls = true)
-        every { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
-        every { viewModel.getUserTimeTreatmentByDay2("2022-06-12") } returns listOfUserTimeTreatment2
+        coEvery { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
+        coEvery { viewModel.getUserTimeTreatmentByDay2("2022-06-12") } returns listOfUserTimeTreatment2
         every { viewModel.updatePrices(any(),any(),any(),any()) } answers {callOriginal()}
-        every { viewModel.insertUserTimeTreatmentFromDb(any()) } answers {callOriginal()}
-        every { viewModel.deleteBeautyTreatmentFromDb(any()) } answers {callOriginal()}
+        coEvery { viewModel.insertUserTimeTreatmentFromDb(any()) } answers {callOriginal()}
+        coEvery { viewModel.deleteBeautyTreatmentFromDb(any()) } answers {callOriginal()}
         every { viewModel.getAllUserTimeTreatments() } answers {callOriginal()}
         viewModel.updatePrices("2022-06-12","2022-06-11", BeautyTreatmentInfo("wodorowe","120","70","30"),"150")
         val list = viewModel.getAllUserTimeTreatments().getOrAwaitValue()
+        assertThat(list.size == 2).isTrue()
         assertThat(list[0].beautyTreatmentPrice == "150").isTrue()
         assertThat(list[1].beautyTreatmentPrice == "150").isTrue()
     }
@@ -155,9 +156,9 @@ class AutoSendViewModelTest {
         viewModel = spyk(AutoSendViewModel(fakeRepository2), recordPrivateCalls = true)
         every { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
         every { viewModel.getUserTimeTreatmentByDay2("2022-06-12") } returns listOfUserTimeTreatment2
-        every { viewModel.updatePrices(any(),any(),any(),any()) } answers {callOriginal()}
-        every { viewModel.insertUserTimeTreatmentFromDb(any()) } answers {callOriginal()}
-        every { viewModel.deleteBeautyTreatmentFromDb(any()) } answers {callOriginal()}
+        coEvery { viewModel.updatePrices(any(),any(),any(),any()) } answers {callOriginal()}
+        coEvery { viewModel.insertUserTimeTreatmentFromDb(any()) } answers {callOriginal()}
+        coEvery  { viewModel.deleteBeautyTreatmentFromDb(any()) } answers {callOriginal()}
         every { viewModel.getAllUserTimeTreatments() } answers {callOriginal()}
         viewModel.updatePrices("2022-06-12","2022-06-11", BeautyTreatmentInfo("wodorowe","120","70","30"),"150")
         val list = viewModel.getAllUserTimeTreatments().getOrAwaitValue()
@@ -170,7 +171,7 @@ class AutoSendViewModelTest {
         val listOfUserTimeTreatment = listOf(UserTimeTreatment("Filip","534231453","15:05","2022-06-11","depilacja",
             "100","30","70"))
         viewModel = spyk(AutoSendViewModel(repository), recordPrivateCalls = true)
-        every { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
+        coEvery { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
         every { viewModel.checkIfTheHourIsCorrect(any(),any()) } answers {callOriginal()}
         val day = LocalDate.parse("2022-06-11")
         val bool = viewModel.checkIfTheHourIsCorrect(day,

@@ -9,11 +9,13 @@ class FakeRepository : RepositoryDefault{
     val list = mutableListOf<UserTimeTreatment>()
     override suspend fun deleteUserTimeTreatment(userTimeTreatment: UserTimeTreatment){
         list.remove(userTimeTreatment)
+        mutableLivedata.value = list
         updateLiveDataList()
     }
 
     override suspend fun insertUserTimeTreatment(userTimeTreatment: UserTimeTreatment){
         list.add(userTimeTreatment)
+        mutableLivedata.value = list
         updateLiveDataList()
     }
 
