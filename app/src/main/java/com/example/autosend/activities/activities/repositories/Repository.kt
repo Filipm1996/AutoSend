@@ -9,58 +9,56 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class Repository(
-    context: Context
-) {
+class Repository(context: Context) : RepositoryDefault {
     private val db : ContactInfoDatabase = Room.databaseBuilder(context,ContactInfoDatabase::class.java,"ContactInfoDb").fallbackToDestructiveMigration().build()
 
     // Contact Info
-    fun insertContactInfoToDb(contactInfo: ContactInfo) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().insertContactInfoToDb(contactInfo)}
+    override suspend fun insertContactInfoToDb(contactInfo: ContactInfo) =  db.contactInfoDao().insertContactInfoToDb(contactInfo)
 
-    fun deleteContactInfoFromDb(contactInfo: ContactInfo) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().deleteContactInfoFromDb(contactInfo) }
+    override suspend fun deleteContactInfoFromDb(contactInfo: ContactInfo) =  db.contactInfoDao().deleteContactInfoFromDb(contactInfo) 
 
-    fun getAllContactInfosFromDb() = db.contactInfoDao().getAllContactInfo()
+    override fun getAllContactInfosFromDb() = db.contactInfoDao().getAllContactInfo()
 
-    fun getContactInfoByName(name: String) = db.contactInfoDao().getContactInfoByName(name)
+    override fun getContactInfoByName(name: String) = db.contactInfoDao().getContactInfoByName(name)
 
     // Beauty Treatment
 
-    fun insertBeautyTreatment (beautyTreatmentInfo: BeautyTreatmentInfo) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().insertBeautyTreatmentToDb(beautyTreatmentInfo) }
+    override suspend fun insertBeautyTreatment (beautyTreatmentInfo: BeautyTreatmentInfo) =  db.contactInfoDao().insertBeautyTreatmentToDb(beautyTreatmentInfo) 
 
-    fun deleteBeautyTreatment (beautyTreatmentInfo: BeautyTreatmentInfo) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().deleteBeautyTreatment(beautyTreatmentInfo) }
+    override suspend fun deleteBeautyTreatment (beautyTreatmentInfo: BeautyTreatmentInfo) = db.contactInfoDao().deleteBeautyTreatment(beautyTreatmentInfo) 
 
-    fun getAllBeautyTreatments () = db.contactInfoDao().getAllBeautyTreatments()
+    override fun getAllBeautyTreatments () = db.contactInfoDao().getAllBeautyTreatments()
 
-    fun getBeautyTreatmentByName (name : String) = db.contactInfoDao().getBeautyTreatmentByName(name)
+    override fun getBeautyTreatmentByName (name : String) = db.contactInfoDao().getBeautyTreatmentByName(name)
 
     // User-Time-Treatment
 
-    fun updateUserTimeTreatment(userTimeTreatment: UserTimeTreatment) = db.contactInfoDao().updateUserTimeTreatment(userTimeTreatment)
+    override fun updateUserTimeTreatment(userTimeTreatment: UserTimeTreatment) = db.contactInfoDao().updateUserTimeTreatment(userTimeTreatment)
 
-    fun getAllUserTimeTreatments() = db.contactInfoDao().getAllUserTimeTreatments()
+    override fun getAllUserTimeTreatments() = db.contactInfoDao().getAllUserTimeTreatments()
 
-    fun insertUserTimeTreatment(userTimeTreatment: UserTimeTreatment) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().insertUserTimeTreatment(userTimeTreatment) }
+    override suspend fun insertUserTimeTreatment(userTimeTreatment: UserTimeTreatment) =  db.contactInfoDao().insertUserTimeTreatment(userTimeTreatment) 
 
-    fun deleteUserTimeTreatment(userTimeTreatment: UserTimeTreatment) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().deleteUserTimeTreatment(userTimeTreatment) }
+    override suspend fun deleteUserTimeTreatment(userTimeTreatment: UserTimeTreatment) =  db.contactInfoDao().deleteUserTimeTreatment(userTimeTreatment) 
 
-    fun getUserTimeTreatmentByDay(localDate: String) =  db.contactInfoDao().getUserTimeTreatmentByDay(localDate)
+    override fun getUserTimeTreatmentByDay(localDate: String) =  db.contactInfoDao().getUserTimeTreatmentByDay(localDate)
 
-    fun getUserTimeTreatmentByDay2(localDate: String) = db.contactInfoDao().getUserTimeTreatmentByDay2(localDate)
+    override fun getUserTimeTreatmentByDay2(localDate: String) = db.contactInfoDao().getUserTimeTreatmentByDay2(localDate)
 
-    fun deleteUserTimeTreatmentByDay(day:String) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().deleteUserTimeTreatmentByDay(day) }
+    override suspend fun deleteUserTimeTreatmentByDay(day:String) = db.contactInfoDao().deleteUserTimeTreatmentByDay(day) 
     //MessageSMS
 
-    fun getMessageFromDb() = db.contactInfoDao().getMessageFromDb()
+    override fun getMessageFromDb() = db.contactInfoDao().getMessageFromDb()
 
-    fun deleteMessageFromDb() = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().deleteMessageFromDb()}
+    override suspend fun deleteMessageFromDb() = db.contactInfoDao().deleteMessageFromDb()
 
-    fun insertMessageToDb(messageSMS: MessageSMS) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().insertMessageToDb(messageSMS) }
+    override suspend fun insertMessageToDb(messageSMS: MessageSMS) =  db.contactInfoDao().insertMessageToDb(messageSMS) 
 
     // Free Day Info
 
-    fun getAllFreDays() = db.contactInfoDao().getAllFreeDays()
+    override fun getAllFreeDays() = db.contactInfoDao().getAllFreeDays()
 
-    fun deleteFreeDayFromDb(freeDayInfo: String) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().deleteFreeDayFromDb(freeDayInfo) }
+    override suspend fun deleteFreeDayFromDb(freeDayInfo: String) =  db.contactInfoDao().deleteFreeDayFromDb(freeDayInfo)
 
-    fun insertFreeDayToDb(freeDayInfo: FreeDayInfo) = CoroutineScope(Dispatchers.IO).launch { db.contactInfoDao().insertFreeDayToDb(freeDayInfo) }
+    override suspend fun insertFreeDayToDb(freeDayInfo: FreeDayInfo) =  db.contactInfoDao().insertFreeDayToDb(freeDayInfo)
 }

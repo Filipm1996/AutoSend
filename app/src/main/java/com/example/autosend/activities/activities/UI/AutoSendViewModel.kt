@@ -4,6 +4,7 @@ package com.example.autosend.activities.activities.UI
 import androidx.lifecycle.ViewModel
 import com.example.autosend.activities.activities.db.entities.*
 import com.example.autosend.activities.activities.repositories.Repository
+import com.example.autosend.activities.activities.repositories.RepositoryDefault
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import java.time.Month
 import java.time.format.DateTimeFormatter
 
 class AutoSendViewModel(
-    private val repository: Repository
+    private val repository: RepositoryDefault
 ) : ViewModel() {
     var thisYear = LocalDate.now().year
     private val polishMonths = listOf(
@@ -32,10 +33,10 @@ class AutoSendViewModel(
     )
     // Contact Info
 
-    fun insertContactToDb(contactInfo: ContactInfo) = repository.insertContactInfoToDb(contactInfo)
+    fun insertContactToDb(contactInfo: ContactInfo) = CoroutineScope(Dispatchers.IO).launch { repository.insertContactInfoToDb(contactInfo) }
 
     fun deleteContactFromDb(contactInfo: ContactInfo) =
-        repository.deleteContactInfoFromDb(contactInfo)
+        CoroutineScope(Dispatchers.IO).launch {repository.deleteContactInfoFromDb(contactInfo)}
 
     fun getAllContactInfoFromDb() = repository.getAllContactInfosFromDb()
 
@@ -44,10 +45,10 @@ class AutoSendViewModel(
     // Beauty Treatment
 
     fun insertBeautyTreatmentToDb(beautyTreatmentInfo: BeautyTreatmentInfo) =
-        repository.insertBeautyTreatment(beautyTreatmentInfo)
+        CoroutineScope(Dispatchers.IO).launch {repository.insertBeautyTreatment(beautyTreatmentInfo)}
 
     fun deleteBeautyTreatmentFromDb(beautyTreatmentInfo: BeautyTreatmentInfo) =
-        repository.deleteBeautyTreatment(beautyTreatmentInfo)
+        CoroutineScope(Dispatchers.IO).launch {repository.deleteBeautyTreatment(beautyTreatmentInfo)}
 
     fun getAllBeautyTreatments() = repository.getAllBeautyTreatments()
 
@@ -60,10 +61,10 @@ class AutoSendViewModel(
     fun getAllUserTimeTreatments() = repository.getAllUserTimeTreatments()
 
     fun insertUserTimeTreatmentFromDb(userTimeTreatment: UserTimeTreatment) =
-        repository.insertUserTimeTreatment(userTimeTreatment)
+        CoroutineScope(Dispatchers.IO).launch {repository.insertUserTimeTreatment(userTimeTreatment)}
 
     fun deleteUsertTimeTreatmentFromDb(userTimeTreatment: UserTimeTreatment) =
-        repository.deleteUserTimeTreatment(userTimeTreatment)
+        CoroutineScope(Dispatchers.IO).launch {repository.deleteUserTimeTreatment(userTimeTreatment)}
 
     fun getUserTimeTreatmentByDay(localDate: String) =
         repository.getUserTimeTreatmentByDay(localDate)
@@ -71,22 +72,22 @@ class AutoSendViewModel(
     fun getUserTimeTreatmentByDay2(localDate: String) =
         repository.getUserTimeTreatmentByDay2(localDate)
 
-    fun deleteUserTimeTreatmentByDay(day : String) = repository.deleteUserTimeTreatmentByDay(day)
+    fun deleteUserTimeTreatmentByDay(day : String) = CoroutineScope(Dispatchers.IO).launch { repository.deleteUserTimeTreatmentByDay(day) }
     //MessageSMS
 
     fun getMessageFromDb() = repository.getMessageFromDb()
 
-    fun deleteMessageFromDb() = repository.deleteMessageFromDb()
+    fun deleteMessageFromDb() = CoroutineScope(Dispatchers.IO).launch { repository.deleteMessageFromDb() }
 
-    fun insertMessageToDb(messageSMS: MessageSMS) = repository.insertMessageToDb(messageSMS)
+    fun insertMessageToDb(messageSMS: MessageSMS) = CoroutineScope(Dispatchers.IO).launch {repository.insertMessageToDb(messageSMS)}
 
     // Free Day info
 
-    fun getAllFreDays() = repository.getAllFreDays()
+    fun getAllFreeDays() = repository.getAllFreeDays()
 
-    fun insertFreeDayToDb(freeday : FreeDayInfo) = repository.insertFreeDayToDb(freeday)
+    fun insertFreeDayToDb(freeday : FreeDayInfo) = CoroutineScope(Dispatchers.IO).launch {repository.insertFreeDayToDb(freeday)}
 
-    fun deleteFreeDayFromDb(freeday: String) = repository.deleteFreeDayFromDb(freeday)
+    fun deleteFreeDayFromDb(freeday: String) = CoroutineScope(Dispatchers.IO).launch {repository.deleteFreeDayFromDb(freeday)}
 
     //Calendar Activity
 
@@ -145,10 +146,13 @@ class AutoSendViewModel(
         return listOfMonthlyIncome
     }
 
+    private fun getToday() : LocalDate {
+        return LocalDate.now().plusDays(1)
+    }
     //Settings Activity
 
     fun getUserTimeTreatmentsForToday(intentData: List<UserTimeTreatment>): List<UserTimeTreatment> {
-        val todays = LocalDate.now().plusDays(1)
+        val todays = getToday()
         val listForToday = mutableListOf<UserTimeTreatment>()
         for (i in intentData) {
             if (LocalDate.parse(i.day) == todays) {
@@ -175,8 +179,6 @@ class AutoSendViewModel(
                 val listToUpdate = getUserTimeTreatmentByDay2(fromDate.toString())
                 for (i in listToUpdate) {
                     if (i.beautyTreatmentName == beautyTreatmentInfo.name) {
-                        println("Yes")
-                        println(newPrice)
                         deleteUsertTimeTreatmentFromDb(i)
                         insertUserTimeTreatmentFromDb(
                             UserTimeTreatment(
@@ -201,7 +203,6 @@ class AutoSendViewModel(
     fun checkIfTheHourIsCorrect(
         day: LocalDate,
         userTimeTreatment: UserTimeTreatment,
-        beautyTreatmentObj: BeautyTreatmentInfo
     ): Boolean {
         val listForDay = getUserTimeTreatmentByDay2(day.toString())
         var bool = true
@@ -210,7 +211,7 @@ class AutoSendViewModel(
                 userTimeTreatment.time,
                 DateTimeFormatter.ofPattern("HH:mm")
             )
-            val endOfAdded = startOfAdded.plusMinutes(beautyTreatmentObj.time.toLong())
+            val endOfAdded = startOfAdded.plusMinutes(userTimeTreatment.beautyTreatmentTime.toLong())
             listForDay.forEach {
                 val timeStart = LocalTime.parse(
                     it.time,
