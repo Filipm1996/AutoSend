@@ -12,12 +12,8 @@ import com.example.autosend.getOrAwaitValue
 import com.google.common.truth.Truth.assertThat
 import io.mockk.*
 import io.mockk.InternalPlatformDsl.toStr
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.*
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -133,17 +129,19 @@ class AutoSendViewModelTest {
             "110","30","70"))
         val fakeRepository = FakeRepository()
         viewModel = spyk(AutoSendViewModel(fakeRepository), recordPrivateCalls = true)
-        coEvery { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
-        coEvery { viewModel.getUserTimeTreatmentByDay2("2022-06-12") } returns listOfUserTimeTreatment2
-        every { viewModel.updatePrices(any(),any(),any(),any()) } answers {callOriginal()}
+        every { viewModel.getUserTimeTreatmentByDay2("2022-06-11") } returns listOfUserTimeTreatment
+        every { viewModel.getUserTimeTreatmentByDay2("2022-06-12") } returns listOfUserTimeTreatment2
+        coEvery { viewModel.updatePrices(any(),any(),any(),any()) } answers {callOriginal()}
         coEvery { viewModel.insertUserTimeTreatmentFromDb(any()) } answers {callOriginal()}
         coEvery { viewModel.deleteBeautyTreatmentFromDb(any()) } answers {callOriginal()}
         every { viewModel.getAllUserTimeTreatments() } answers {callOriginal()}
         viewModel.updatePrices("2022-06-12","2022-06-11", BeautyTreatmentInfo("wodorowe","120","70","30"),"150")
         val list = viewModel.getAllUserTimeTreatments().getOrAwaitValue()
+        delay(1000)
         assertThat(list.size == 2).isTrue()
         assertThat(list[0].beautyTreatmentPrice == "150").isTrue()
         assertThat(list[1].beautyTreatmentPrice == "150").isTrue()
+
     }
 
     @Test
@@ -162,8 +160,10 @@ class AutoSendViewModelTest {
         every { viewModel.getAllUserTimeTreatments() } answers {callOriginal()}
         viewModel.updatePrices("2022-06-12","2022-06-11", BeautyTreatmentInfo("wodorowe","120","70","30"),"150")
         val list = viewModel.getAllUserTimeTreatments().getOrAwaitValue()
+        delay(1000)
         assertThat(list.size == 1).isTrue()
         assertThat(list[0].beautyTreatmentPrice == "150").isTrue()
+
     }
 
     @Test
