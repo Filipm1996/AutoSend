@@ -1,6 +1,7 @@
 package layout
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,18 +13,19 @@ import com.example.autosend.activities.activities.db.entities.MonthlyIncomeInfo
 import com.example.autosend.activities.activities.db.entities.UserTimeTreatment
 import com.example.autosend.activities.activities.repositories.Repository
 import com.example.autosend.databinding.ActivityMonthlyIncomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.Month
 
+@AndroidEntryPoint
 class ActivityMonthlyIncome : AppCompatActivity(){
     private  var monthlyIncomeAdapter = MonthlyIncomeAdapter()
-    private lateinit var viewModel : AutoSendViewModel
+    private val viewModel: AutoSendViewModel by viewModels()
     private lateinit var binding : ActivityMonthlyIncomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMonthlyIncomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpViewModel()
         binding.year.text = viewModel.thisYear.toString()
         setUpRecyclerView()
     }
@@ -56,9 +58,6 @@ class ActivityMonthlyIncome : AppCompatActivity(){
 
 
 
-    private fun setUpViewModel() {
-        viewModel = ViewModelProvider(this, ViewModelFactory(Repository(applicationContext)))[AutoSendViewModel::class.java]
-    }
 
 
 }

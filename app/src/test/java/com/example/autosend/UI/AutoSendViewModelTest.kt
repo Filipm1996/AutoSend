@@ -24,7 +24,6 @@ import java.time.LocalDate
 
 @ExperimentalCoroutinesApi
 class AutoSendViewModelTest {
-    private lateinit var context: Context
     private lateinit var repository : Repository
     private lateinit var viewModel : AutoSendViewModel
 
@@ -36,7 +35,6 @@ class AutoSendViewModelTest {
 
     @Before
     fun setUp(){
-        context = mock(Context::class.java)
         repository = mockk()
         viewModel = AutoSendViewModel(repository)
             Dispatchers.setMain(testDispatcher)
@@ -137,7 +135,7 @@ class AutoSendViewModelTest {
         every { viewModel.getAllUserTimeTreatments() } answers {callOriginal()}
         viewModel.updatePrices("2022-06-12","2022-06-11", BeautyTreatmentInfo("wodorowe","120","70","30"),"150")
         val list = viewModel.getAllUserTimeTreatments().getOrAwaitValue()
-        delay(1000)
+        delay(100)
         assertThat(list.size == 2).isTrue()
         assertThat(list[0].beautyTreatmentPrice == "150").isTrue()
         assertThat(list[1].beautyTreatmentPrice == "150").isTrue()
@@ -160,7 +158,7 @@ class AutoSendViewModelTest {
         every { viewModel.getAllUserTimeTreatments() } answers {callOriginal()}
         viewModel.updatePrices("2022-06-12","2022-06-11", BeautyTreatmentInfo("wodorowe","120","70","30"),"150")
         val list = viewModel.getAllUserTimeTreatments().getOrAwaitValue()
-        delay(1000)
+        delay(100)
         assertThat(list.size == 1).isTrue()
         assertThat(list[0].beautyTreatmentPrice == "150").isTrue()
 

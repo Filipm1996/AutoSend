@@ -15,7 +15,7 @@ interface RepositoryDefault {
 
     fun getAllContactInfosFromDb(): LiveData<List<ContactInfo>>
 
-    fun getContactInfoByName(name: String): ContactInfo
+    fun getContactInfoByName(name: String): ContactInfo?
 
     // Beauty Treatment
 
@@ -25,7 +25,7 @@ interface RepositoryDefault {
 
     fun getAllBeautyTreatments (): LiveData<List<BeautyTreatmentInfo>>
 
-    fun getBeautyTreatmentByName (name : String): BeautyTreatmentInfo
+    fun getBeautyTreatmentByName (name : String): BeautyTreatmentInfo?
 
     // User-Time-Treatment
 

@@ -5,96 +5,129 @@ import androidx.lifecycle.MutableLiveData
 import com.example.autosend.activities.activities.db.entities.*
 
 class FakeRepository : RepositoryDefault{
-    val mutableLivedata = MutableLiveData<List<UserTimeTreatment>>()
-    val list = mutableListOf<UserTimeTreatment>()
+    private val mutableLivedataUserTimeTreatment = MutableLiveData<List<UserTimeTreatment>>()
+    private val listUserTimeTreatment = mutableListOf<UserTimeTreatment>()
+
+    private val mutableLiveDataContactInfo = MutableLiveData<List<ContactInfo>>()
+    private val listOfContactInfo = mutableListOf<ContactInfo>()
+
+    private val mutableLiveDataBeautyTreatment = MutableLiveData<List<BeautyTreatmentInfo>>()
+    private val listOfBeautyTreatmentInfo = mutableListOf<BeautyTreatmentInfo>()
+
+    private val mutableLiveDataUserTimeTreatment = MutableLiveData<List<UserTimeTreatment>>()
+    private val listOfUserTimeTreatment = mutableListOf<UserTimeTreatment>()
+
+    var message = MessageSMS("")
+    private val mutableLiveDataMessage = MutableLiveData<MessageSMS>()
+
+    private val freeDaysList = mutableListOf<FreeDayInfo>()
+    private val mutableLiveDataFreeDayInfo = MutableLiveData<List<FreeDayInfo>> ()
+
     override suspend fun deleteUserTimeTreatment(userTimeTreatment: UserTimeTreatment){
-        list.remove(userTimeTreatment)
-        mutableLivedata.value = list
+        listUserTimeTreatment.remove(userTimeTreatment)
+        mutableLivedataUserTimeTreatment.value = listUserTimeTreatment
         updateLiveDataList()
     }
 
     override suspend fun insertUserTimeTreatment(userTimeTreatment: UserTimeTreatment){
-        list.add(userTimeTreatment)
-        mutableLivedata.value = list
+        listUserTimeTreatment.add(userTimeTreatment)
+        mutableLivedataUserTimeTreatment.value = listUserTimeTreatment
         updateLiveDataList()
     }
 
     private fun updateLiveDataList(){
-        mutableLivedata.postValue(list)
+        mutableLivedataUserTimeTreatment.postValue(listUserTimeTreatment)
     }
     override fun getAllUserTimeTreatments() : LiveData<List<UserTimeTreatment>> {
-        return mutableLivedata
+        return mutableLivedataUserTimeTreatment
     }
 
     override suspend fun insertContactInfoToDb(contactInfo: ContactInfo) {
-        TODO("Not yet implemented")
+        listOfContactInfo.add(contactInfo)
+        mutableLiveDataContactInfo.postValue(listOfContactInfo)
     }
 
     override suspend fun deleteContactInfoFromDb(contactInfo: ContactInfo) {
-        TODO("Not yet implemented")
+        listOfContactInfo.remove(contactInfo)
+        mutableLiveDataContactInfo.postValue(listOfContactInfo)
     }
 
     override fun getAllContactInfosFromDb(): LiveData<List<ContactInfo>> {
-        TODO("Not yet implemented")
+        return mutableLiveDataContactInfo
     }
 
-    override fun getContactInfoByName(name: String): ContactInfo {
-        TODO("Not yet implemented")
+    override fun getContactInfoByName(name: String): ContactInfo? {
+        return listOfContactInfo.find { it.nameAndSurrname == name }
     }
 
     override suspend fun insertBeautyTreatment(beautyTreatmentInfo: BeautyTreatmentInfo) {
-        TODO("Not yet implemented")
+        listOfBeautyTreatmentInfo.add(beautyTreatmentInfo)
+        mutableLiveDataBeautyTreatment.postValue(listOfBeautyTreatmentInfo)
     }
 
     override suspend fun deleteBeautyTreatment(beautyTreatmentInfo: BeautyTreatmentInfo) {
-        TODO("Not yet implemented")
+        listOfBeautyTreatmentInfo.remove(beautyTreatmentInfo)
+        mutableLiveDataBeautyTreatment.postValue(listOfBeautyTreatmentInfo)
     }
 
     override fun getAllBeautyTreatments(): LiveData<List<BeautyTreatmentInfo>> {
-        TODO("Not yet implemented")
+        return mutableLiveDataBeautyTreatment
     }
 
-    override fun getBeautyTreatmentByName(name: String): BeautyTreatmentInfo {
-        TODO("Not yet implemented")
+    override fun getBeautyTreatmentByName(name: String): BeautyTreatmentInfo? {
+        return listOfBeautyTreatmentInfo.find { it.name == name }
     }
 
     override fun updateUserTimeTreatment(userTimeTreatment: UserTimeTreatment) {
-        TODO("Not yet implemented")
+        val elementOfList =  listOfUserTimeTreatment.find { it == userTimeTreatment }
+        val indexOf = listOfUserTimeTreatment.indexOf(elementOfList)
+        listOfUserTimeTreatment[indexOf] = userTimeTreatment
+        mutableLiveDataUserTimeTreatment.postValue(listOfUserTimeTreatment)
     }
 
     override fun getUserTimeTreatmentByDay(localDate: String): LiveData<List<UserTimeTreatment>> {
-        TODO("Not yet implemented")
+        val newLiveData = MutableLiveData<List<UserTimeTreatment>>()
+        val newList = listOfUserTimeTreatment.filter { it.day == localDate }
+        newLiveData.postValue(newList)
+        return newLiveData
     }
 
     override fun getUserTimeTreatmentByDay2(localDate: String): List<UserTimeTreatment> {
-        TODO("Not yet implemented")
+        return listOfUserTimeTreatment.filter { it.day == localDate }
     }
 
     override suspend fun deleteUserTimeTreatmentByDay(day: String) {
-        TODO("Not yet implemented")
+        listOfUserTimeTreatment.forEach{
+            if(it.day == day){
+                listOfUserTimeTreatment.remove(it)
+            }
+        }
     }
 
     override fun getMessageFromDb(): LiveData<MessageSMS> {
-        TODO("Not yet implemented")
+        return mutableLiveDataMessage
     }
 
     override suspend fun deleteMessageFromDb() {
-        TODO("Not yet implemented")
+        mutableLiveDataMessage.postValue(MessageSMS(""))
     }
 
     override suspend fun insertMessageToDb(messageSMS: MessageSMS) {
-        TODO("Not yet implemented")
+        message = messageSMS
+        mutableLiveDataMessage.postValue(message)
     }
 
     override fun getAllFreeDays(): LiveData<List<FreeDayInfo>> {
-        TODO("Not yet implemented")
+        return mutableLiveDataFreeDayInfo
     }
 
     override suspend fun deleteFreeDayFromDb(freeDayInfo: String) {
-        TODO("Not yet implemented")
+        freeDaysList.remove(FreeDayInfo(freeDayInfo))
+        mutableLiveDataFreeDayInfo.postValue(freeDaysList)
     }
 
     override suspend fun insertFreeDayToDb(freeDayInfo: FreeDayInfo) {
-        TODO("Not yet implemented")
+        freeDaysList.add(freeDayInfo)
+        mutableLiveDataFreeDayInfo.postValue(freeDaysList)
     }
 }

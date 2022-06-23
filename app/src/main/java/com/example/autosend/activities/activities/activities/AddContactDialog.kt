@@ -37,7 +37,8 @@ class AddContactDialog : DialogFragment(){
         binding.addButton.setOnClickListener {
             val nameText = binding.editTextNameAndSurrname.text.toString()
             val number = binding.editTextPhone.text.toString()
-            if(nameText.isNotEmpty() && number.isNotEmpty() && number.isDigitsOnly()){
+
+            if(nameText.isNotEmpty() && nameText.length<25 &&  number.length==9 && number.isDigitsOnly()){
                 val contactInfo = ContactInfo(nameText,number)
                 onAddButtonClicked!!.invoke(contactInfo)
                 Toast.makeText(requireContext(),"Dodano ${contactInfo.nameAndSurrname} do kontaktów!", Toast.LENGTH_LONG).show()

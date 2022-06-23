@@ -8,15 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.autosend.activities.activities.UI.AutoSendViewModel
 import com.example.autosend.activities.activities.UI.ViewModelFactory
 import com.example.autosend.activities.activities.db.entities.BeautyTreatmentInfo
 import com.example.autosend.activities.activities.repositories.Repository
 import com.example.autosend.databinding.DiscountDialogBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
+@AndroidEntryPoint
 class DiscountDialog(
     val beautyTreatmentInfo: BeautyTreatmentInfo
 ) : DialogFragment() {
@@ -25,7 +28,7 @@ class DiscountDialog(
     lateinit var dateFromSetListener: DatePickerDialog.OnDateSetListener
     lateinit var dateToSetListener: DatePickerDialog.OnDateSetListener
     var cal: Calendar = Calendar.getInstance()
-    private lateinit var viewModel: AutoSendViewModel
+    private val viewModel: AutoSendViewModel by viewModels()
     private lateinit var binding: DiscountDialogBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +42,6 @@ class DiscountDialog(
         super.onCreate(savedInstanceState)
         binding = DiscountDialogBinding.inflate(layoutInflater)
         setUpDatePicker()
-        setUpViewModel()
         setUpClickListeners()
         binding.beautyTreatmentInfo.text = beautyTreatmentInfo.name
     }
@@ -60,14 +62,6 @@ class DiscountDialog(
                 binding.dateTo.text = sdf.format(cal.time)
             }
     }
-
-    private fun setUpViewModel() {
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(Repository(requireContext()))
-        )[AutoSendViewModel::class.java]
-    }
-
 
     private fun setUpClickListeners() {
         binding.changeDateFromButton.setOnClickListener {

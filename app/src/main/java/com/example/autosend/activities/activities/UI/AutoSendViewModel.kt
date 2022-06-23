@@ -1,10 +1,11 @@
 package com.example.autosend.activities.activities.UI
 
 
+
 import androidx.lifecycle.ViewModel
 import com.example.autosend.activities.activities.db.entities.*
-import com.example.autosend.activities.activities.repositories.Repository
 import com.example.autosend.activities.activities.repositories.RepositoryDefault
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,8 +13,10 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.Month
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class AutoSendViewModel(
+@HiltViewModel
+class AutoSendViewModel @Inject constructor (
     private val repository: RepositoryDefault
 ) : ViewModel() {
     var thisYear = LocalDate.now().year

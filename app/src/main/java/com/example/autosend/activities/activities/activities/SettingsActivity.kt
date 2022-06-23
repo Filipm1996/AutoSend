@@ -11,9 +11,11 @@ import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.telephony.SmsManager.getSmsManagerForSubscriptionId
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.autosend.R
@@ -24,17 +26,17 @@ import com.example.autosend.activities.activities.db.entities.MessageSMS
 import com.example.autosend.activities.activities.db.entities.UserTimeTreatment
 import com.example.autosend.activities.activities.repositories.Repository
 import com.example.autosend.databinding.ActivitySettingsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
     private lateinit var smsManager: SmsManager
     lateinit var binding: ActivitySettingsBinding
-    private lateinit var viewModel : AutoSendViewModel
+    private val viewModel: AutoSendViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setUpViewModel()
         viewModel.getMessageFromDb().observe(this) {
             setUpMessage(it)
         }
@@ -56,11 +58,6 @@ class SettingsActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             setUpClickListeners(list)
         }
-    }
-
-    private fun setUpViewModel() {
-        val factory = ViewModelFactory(Repository(this))
-        viewModel = ViewModelProvider(this,factory)[AutoSendViewModel::class.java]
     }
 
     private fun setUpClickListeners(list : List<UserTimeTreatment>) {

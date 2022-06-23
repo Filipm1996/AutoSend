@@ -4,6 +4,7 @@ package com.example.autosend.activities.activities.activities
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -16,17 +17,17 @@ import com.example.autosend.activities.activities.UI.ViewModelFactory
 import com.example.autosend.activities.activities.repositories.Repository
 import com.example.autosend.databinding.ActivityContactBookBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ContactBook : AppCompatActivity() {
-    private lateinit var autoSendViewModel: AutoSendViewModel
+    private val autoSendViewModel: AutoSendViewModel by viewModels()
     private lateinit var binding: ActivityContactBookBinding
     private lateinit var contactBookAdapter: ContactBookAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityContactBookBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        autoSendViewModel = ViewModelProvider(this,ViewModelFactory(Repository(this)))[AutoSendViewModel::class.java]
         contactBookAdapter = ContactBookAdapter()
         setOnClickLiseners()
         setUpRecyclerView()

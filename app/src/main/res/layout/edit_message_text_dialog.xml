@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraintLayoutEditTextDialog"
     android:background="#F3F3F3"
-    android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <EditText
         android:id="@+id/editText"
@@ -40,4 +39,3 @@
         app:layout_constraintTop_toBottomOf="@id/editText"
         android:layout_marginEnd="20dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>

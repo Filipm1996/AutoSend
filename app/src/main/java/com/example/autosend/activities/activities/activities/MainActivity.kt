@@ -6,27 +6,26 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.autosend.activities.activities.UI.AutoSendViewModel
-import com.example.autosend.activities.activities.UI.ViewModelFactory
 import com.example.autosend.activities.activities.activitie.CalendarActivity
-import com.example.autosend.activities.activities.repositories.Repository
 import com.example.autosend.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import layout.ActivityMonthlyIncome
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var permissionsLauncher: ActivityResultLauncher<Array<String>>
     private var sendSMSpermissionGranted = false
-    private lateinit var viewModel: AutoSendViewModel
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setClickListeners()
-        setUpViewModel()
+
         setContentView(binding.root)
         permissionsLauncher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -36,11 +35,6 @@ class MainActivity : AppCompatActivity() {
         requestSmsPermission()
     }
 
-
-    private fun setUpViewModel() {
-        val factory = ViewModelFactory(Repository(this))
-        viewModel = ViewModelProvider(this, factory)[AutoSendViewModel::class.java]
-    }
 
 
     private fun setClickListeners() {
